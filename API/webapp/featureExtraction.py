@@ -270,6 +270,10 @@ class UsefulFeatures(object):
             website_metric['text_length'] = len(words)
             website_metric['num_onclick'] = cnt
             website_metric['num_of_form'] = count
+        else:
+            website_metric['text_length'] = 0
+            website_metric['num_onclick'] = 0
+            website_metric['num_of_form'] = 0
         return website_metric
 
 

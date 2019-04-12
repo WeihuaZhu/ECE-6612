@@ -30,5 +30,4 @@ pip3 install bs4
 pip3 install nltk
 pip3 install pymongo
 pip3 install joblib
-pip3 install --upgrade sklearn
 pip3 install --upgrade scikit-learn

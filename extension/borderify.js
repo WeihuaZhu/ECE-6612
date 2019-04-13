@@ -25,6 +25,13 @@ console.log("currentURL is: " + currentURL);
 
 phishingDetect(currentURL).then(data => {
     console.log(data);
+    if (data.rate == "1") {
+        document.body.style.border = "5px solid red";
+        alert("This is a potential phishing website.");
+    } else {
+        document.body.style.border = "5px solid green";
+        alert("This is not a potential phishing website.");
+    }
 });
 
 

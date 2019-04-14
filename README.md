@@ -33,3 +33,5 @@ pip3 install --upgrade scikit-learn
 pip3 uninstall whois
 pip3 install python-whois==0.7.1
 pip3 install lxml
+#033[31m>>> import nltk
+>>> nltk.download('punkt')

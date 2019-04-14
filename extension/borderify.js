@@ -1,5 +1,6 @@
 async function phishingDetect(URL) {
     try {
+        console.log("Input URL is: " + currentURL);
         var website = {
             url: '',
             rate: ''
@@ -20,12 +21,12 @@ async function phishingDetect(URL) {
     }
 }
 
-var currentURL = window.location.href;
+var currentURL = String(window.location.href).replace(/^(https?:\/\/)?(www\.)?/,'');
 console.log("currentURL is: " + currentURL);
 
-phishingDetect(currentURL).then(data => {
+phishingDetect("http://" + currentURL).then(data => {
     console.log(data);
-    if (data.rate == "0") {
+    if (data.rate == "1") {
         document.body.style.border = "20px solid red";
         alert("This is a potential phishing website.");
     } else {

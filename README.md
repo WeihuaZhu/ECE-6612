@@ -25,9 +25,11 @@ python3 manage.py runserver
 
 lib to install:
 pip3 install --upgrade pip
-pip3 install whois
 pip3 install bs4
 pip3 install nltk
 pip3 install pymongo
 pip3 install joblib
 pip3 install --upgrade scikit-learn
+pip3 uninstall whois
+pip3 install python-whois==0.7.1
+pip3 install lxml

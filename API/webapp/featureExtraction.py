@@ -33,7 +33,6 @@ class UsefulFeatures(object):
         :rtype: (int,int,int)
         :returns: (DNSRecordExists, AgeOfDomain, DomainRegLen)
         """
-
         def getDomainRegLen(domain_name):
             """
             :rtype: int
@@ -52,29 +51,28 @@ class UsefulFeatures(object):
                     for i in range(len(creation_dates)):
                         creation_date = creation_dates[i]
                         expiration_date = expiration_dates[i]
-                        if (isinstance(creation_date, str) or isinstance(expiration_date, str)):
+                        if (isinstance(creation_date,str) or isinstance(expiration_date,str)):
                             try:
-                                creation_date = datetime.strptime(creation_date, '%Y-%m-%d')
-                                expiration_date = datetime.strptime(expiration_date, "%Y-%m-%d")
+                                creation_date = datetime.strptime(creation_date,'%Y-%m-%d')
+                                expiration_date = datetime.strptime(expiration_date,"%Y-%m-%d")
                             except:
                                 return -1
                         registration_length += abs((expiration_date - creation_date).days)
-
-                    return int(registration_length / len(creation_dates))
+                        
+                    return int(registration_length/len(creation_dates))
                 else:
                     creation_date = domain_name.creation_date
                     expiration_date = domain_name.expiration_date
-                    if (isinstance(creation_date, str) or isinstance(expiration_date, str)):
+                    if (isinstance(creation_date,str) or isinstance(expiration_date,str)):
                         try:
-                            creation_date = datetime.strptime(creation_date, '%Y-%m-%d')
-                            expiration_date = datetime.strptime(expiration_date, "%Y-%m-%d")
+                            creation_date = datetime.strptime(creation_date,'%Y-%m-%d')
+                            expiration_date = datetime.strptime(expiration_date,"%Y-%m-%d")
                         except:
                             return -1
                     registration_length = abs((expiration_date - creation_date).days)
                     return int(registration_length)
             except:
                 return -1
-
 
         def getAgeOfDomain(domain_name):
             """
@@ -93,29 +91,28 @@ class UsefulFeatures(object):
                     for i in range(len(creation_dates)):
                         creation_date = creation_dates[i]
                         expiration_date = expiration_dates[i]
-                        if (isinstance(creation_date, str) or isinstance(expiration_date, str)):
+                        if (isinstance(creation_date,str) or isinstance(expiration_date,str)):
                             try:
-                                creation_date = datetime.strptime(creation_date, '%Y-%m-%d')
-                                expiration_date = datetime.strptime(expiration_date, "%Y-%m-%d")
+                                creation_date = datetime.strptime(creation_date,'%Y-%m-%d')
+                                expiration_date = datetime.strptime(expiration_date,"%Y-%m-%d")
                             except:
                                 return 1
                         registration_length += abs((expiration_date - today).days)
-
-                    return int(registration_length / len(creation_dates))
+                        
+                    return int(registration_length/len(creation_dates))
                 else:
                     creation_date = domain_name.creation_date
                     expiration_date = domain_name.expiration_date
-                    if (isinstance(creation_date, str) or isinstance(expiration_date, str)):
+                    if (isinstance(creation_date,str) or isinstance(expiration_date,str)):
                         try:
-                            creation_date = datetime.strptime(creation_date, '%Y-%m-%d')
-                            expiration_date = datetime.strptime(expiration_date, "%Y-%m-%d")
+                            creation_date = datetime.strptime(creation_date,'%Y-%m-%d')
+                            expiration_date = datetime.strptime(expiration_date,"%Y-%m-%d")
                         except:
                             return -1
                     registration_length = abs((expiration_date - today).days)
                     return int(registration_length)
             except:
                 return -1
-
         try:
             domain_name = whois.whois(urlparse(self.url).netloc)
             AgeOfDomain = getAgeOfDomain(domain_name)
@@ -124,17 +121,22 @@ class UsefulFeatures(object):
         except:
             return (1, -1, -1)
 
-
-
     # The URL includes "https" or not
     def getHasHttps(self):
         """
         :rtype: int
         """
         if self.url[0:5] != 'https':
-            return 1  # does not have https
+            return 1     # does not have https
         else:
-            return 0  # potential legitimate
+            return 0     # potential legitimate
+
+    # The URL https is fake or not, when the URL has "https"
+    def getFakeHttps(self):
+        """
+        :rtype: bool
+        """
+        pass
 
     # The Url string length
     def getUrlLength(self):
@@ -155,28 +157,13 @@ class UsefulFeatures(object):
         """
         :rtype: int
         """
-        flag = re.search(
-            '(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\/)|'  # IPv4
-            '((0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\/)'  # IPv4
-            '(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}', self.url)  # Ipv6
+        flag = re.search('(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\/)|'  #IPv4
+                    '((0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\/)'  #IPv4
+                    '(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}',self.url)     #Ipv6
         if flag:
-            return 1  # phishing
+            return 1    # phishing
         else:
-            return 0  # legitimate
-
-    # The Url includes direct IP address or not
-    def getHaveIpAddress(self):
-        """
-        :rtype: int
-        """
-        flag = re.search(
-            '(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\/)|'  # IPv4
-            '((0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\/)'  # IPv4
-            '(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}', self.url)  # Ipv6
-        if flag:
-            return 1  # phishing
-        else:
-            return 0  # legitimate
+            return 0    # legitimate
 
     # The Url includes '@' symbol or not
     def getHaveAtSymbol(self):
@@ -185,34 +172,79 @@ class UsefulFeatures(object):
         """
         m = re.search('@', self.url)
         if m == None:
-            return 0  # legitimate
+            return 0   # legitimate
         else:
-            return 1  # phishing
+            return 1   # phishing
 
     # The Url includes '//' redirect or not
     def getIfRedirects(self):
         if "//" in urlparse(self.url).path:
-            return 1  # phishing
+            return 1            # phishing
         else:
-            return 0  # legitimate
+            return 0            # legitimate
 
     # The Url uses shortenUrl service or not
     def getIsShortenUrl(self):
         """
         :rtype: int
         """
-        match = re.search('bit\.ly|goo\.gl|shorte\.st|go2l\.ink|x\.co|ow\.ly|t\.co|tinyurl|tr\.im|is\.gd|cli\.gs|'
-                          'yfrog\.com|migre\.me|ff\.im|tiny\.cc|url4\.eu|twit\.ac|su\.pr|twurl\.nl|snipurl\.com|'
-                          'short\.to|BudURL\.com|ping\.fm|post\.ly|Just\.as|bkite\.com|snipr\.com|fic\.kr|loopt\.us|'
-                          'doiop\.com|short\.ie|kl\.am|wp\.me|rubyurl\.com|om\.ly|to\.ly|bit\.do|t\.co|lnkd\.in|'
-                          'db\.tt|qr\.ae|adf\.ly|goo\.gl|bitly\.com|cur\.lv|tinyurl\.com|ow\.ly|bit\.ly|ity\.im|'
-                          'q\.gs|is\.gd|po\.st|bc\.vc|twitthis\.com|u\.to|j\.mp|buzurl\.com|cutt\.us|u\.bb|yourls\.org|'
-                          'x\.co|prettylinkpro\.com|scrnch\.me|filoops\.info|vzturl\.com|qr\.net|1url\.com|tweez\.me|v\.gd|tr\.im|link\.zip\.net',
-                          self.url)
+        match=re.search('bit\.ly|goo\.gl|shorte\.st|go2l\.ink|x\.co|ow\.ly|t\.co|tinyurl|tr\.im|is\.gd|cli\.gs|'
+                    'yfrog\.com|migre\.me|ff\.im|tiny\.cc|url4\.eu|twit\.ac|su\.pr|twurl\.nl|snipurl\.com|'
+                    'short\.to|BudURL\.com|ping\.fm|post\.ly|Just\.as|bkite\.com|snipr\.com|fic\.kr|loopt\.us|'
+                    'doiop\.com|short\.ie|kl\.am|wp\.me|rubyurl\.com|om\.ly|to\.ly|bit\.do|t\.co|lnkd\.in|'
+                    'db\.tt|qr\.ae|adf\.ly|goo\.gl|bitly\.com|cur\.lv|tinyurl\.com|ow\.ly|bit\.ly|ity\.im|'
+                    'q\.gs|is\.gd|po\.st|bc\.vc|twitthis\.com|u\.to|j\.mp|buzurl\.com|cutt\.us|u\.bb|yourls\.org|'
+                    'x\.co|prettylinkpro\.com|scrnch\.me|filoops\.info|vzturl\.com|qr\.net|1url\.com|tweez\.me|v\.gd|tr\.im|link\.zip\.net',self.url)
         if match:
-            return 1  # phishing
+            return 1        # phishing
         else:
-            return 0  # legitimate
+            return 0        # legitimate
+
+
+    def getPageRank(self):
+        pass
+
+#    # The Url domain expires less than 1 year or not
+#    def getDomainRegLen(self):
+#       """
+#       :rtype: int
+#       """
+#       try:
+#          domain_name = whois.whois(urlparse(self.url).netloc)
+#          expiration_date = domain_name.expiration_date
+#          today = time.strftime('%Y-%m-%d')
+#          today = datetime.strptime(today, '%Y-%m-%d')
+#          if expiration_date is None:
+#             return 2
+#          elif type(expiration_date) is list or type(today) is list :
+#             return 1
+#          else:
+#             creation_date = domain_name.creation_date
+#             expiration_date = domain_name.expiration_date
+#             if (isinstance(creation_date,str) or isinstance(expiration_date,str)):
+#                try:
+#                   creation_date = datetime.strptime(creation_date,'%Y-%m-%d')
+#                   expiration_date = datetime.strptime(expiration_date,"%Y-%m-%d")
+#                except:
+#                   return 1
+#             registration_length = abs((expiration_date - today).days)
+#             if registration_length / 365 <= 1:
+#                return 2
+#             else:
+#                return 0
+#       except:
+#          return 2
+
+#    # The DNS record of Url exists or not
+#    def getDNSRecordExists(self):
+#       """
+#       :rtype: int
+#       """
+#       try:
+#          domain_name = whois.whois(urlparse(self.url).netloc)
+#          return 0
+#       except:
+#          return 2
 
     # The Url has low website traffic or not, from Alexa database
     def getWebTrafficAlexa(self):
@@ -220,15 +252,16 @@ class UsefulFeatures(object):
         :rtype: int
         """
         try:
-            rank = \
-                BeautifulSoup(
-                    urllib.request.urlopen("http://data.alexa.com/data?cli=10&dat=s&url=" + self.url).read(),
-                    "xml").find("REACH")['RANK']
+            print("important URL")
+            print(self.url)
+            rank = BeautifulSoup(urllib.request.urlopen("http://data.alexa.com/data?cli=10&dat=s&url=" + self.url).read(), "xml").find("REACH")['RANK']
         except TypeError:
             return -1
         except HTTPError:
             return -2
-        except:
+        except Exception as e:
+            print("Error:")
+            print(e)
             return -3
         rank = int(rank)
         return rank
@@ -271,9 +304,10 @@ class UsefulFeatures(object):
             website_metric['num_onclick'] = cnt
             website_metric['num_of_form'] = count
         else:
-            website_metric['text_length'] = 0
-            website_metric['num_onclick'] = 0
-            website_metric['num_of_form'] = 0
+            raise(Exception('website feature extraction failed'))
+            # website_metric['text_length'] = 0
+            # website_metric['num_onclick'] = 0
+            # website_metric['num_of_form'] = 0
         return website_metric
 
 
@@ -314,6 +348,8 @@ class UsefulFeatures(object):
         features = UsefulFeatures(self.url)
         all_features = features.getFeatureSummary()
         all_features = np.array(all_features).reshape(1, len(all_features))
+        print("all_features")
+        print(all_features)
         clf2 = load(os.path.join(os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__))), 'model.joblib'))
         preds = clf2.predict(all_features)[0]
         preds = int(preds)

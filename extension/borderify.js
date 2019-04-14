@@ -1,6 +1,6 @@
 async function phishingDetect(URL) {
     try {
-        console.log("Input URL is: " + currentURL);
+        console.log("Input URL is: " + URL);
         var website = {
             url: '',
             rate: ''
@@ -22,16 +22,20 @@ async function phishingDetect(URL) {
 }
 
 var currentURL = String(window.location.href).replace(/^(https?:\/\/)?(www\.)?/,'');
+var lastChar = currentURL[currentURL.length -1];
+if (lastChar == "/") {
+    currentURL = currentURL.substring(0, currentURL.length - 1);
+}
 console.log("currentURL is: " + currentURL);
 
 phishingDetect("http://" + currentURL).then(data => {
     console.log(data);
     if (data.rate == "1") {
-        document.body.style.border = "20px solid red";
-        alert("This is a potential phishing website.");
+        document.body.style.border = "40px solid red";
+        alert("Warning! This is a potential phishing website.");
     } else {
-        document.body.style.border = "5px solid green";
-        alert("This is not a legitimate website.");
+        document.body.style.border = "40px solid green";
+        alert("Good News! This is a legitimate website.");
     }
 });
 

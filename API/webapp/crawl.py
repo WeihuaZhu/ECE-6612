@@ -262,6 +262,7 @@ class UpdateUrl:
             soup = BeautifulSoup(response.data, 'html.parser')
             return soup
         except(UnicodeEncodeError, KeyError, urllib3.exceptions.LocationValueError, ConnectionResetError, urllib3.exceptions.MaxRetryError, ConnectionRefusedError, ConnectionAbortedError, ConnectionError) as err:
+            print(err)
             print('an error occured with: {}'.format(str(url.encode('utf8', 'ignore'))))
             return 
 

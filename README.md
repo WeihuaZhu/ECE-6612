@@ -1,5 +1,6 @@
 ## ECE 6612 (Computer Network Security)
 
+
 Phishing Sites: Build a seed list of phising domains that are updated daily, and show trends in lifetime of the average phishing page. 
 
 ### Dependencies
@@ -35,3 +36,10 @@ pip3 install python-whois==0.7.1
 pip3 install lxml
 #033[31m>>> import nltk
 >>> nltk.download('punkt')
+
+##Demo Website
+#http://amazon.com
+#http://wikipedia.org
+
+#http://otolaser.com.co/layouts/joomla/searchtools/default/index.htm
+#http://beeschage.com
